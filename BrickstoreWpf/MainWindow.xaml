@@ -7,6 +7,30 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+            <Button x:Name="btnMegnyit" Content="Megnyit" Click="btnMegnyit_Click"/>
+            <TextBox x:Name="txtSzuro" Width="200" Margin="10,0,0,0" TextChanged="txtSzuro_TextChanged"/>
+        </StackPanel>
+
+        <DataGrid x:Name="dgLegoKeszlet" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ItemID" Binding="{Binding ItemID}"/>
+                <DataGridTextColumn Header="ItemName" Binding="{Binding ItemName}"/>
+                <DataGridTextColumn Header="CategoryName" Binding="{Binding CategoryName}"/>
+                <DataGridTextColumn Header="ColorName" Binding="{Binding ColorName}"/>
+                <DataGridTextColumn Header="Qty" Binding="{Binding Qty}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock x:Name="tbElemekSzama" Grid.Column="1" Grid.Row="0" Margin="10,0,0,0" Text="Elemek száma: "/>
     </Grid>
 </Window>
