@@ -24,10 +24,18 @@
         <DataGrid x:Name="dgLegoKeszlet" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ItemID" Binding="{Binding ItemID}"/>
+                <DataGridTextColumn Header="ItemTypeID" Binding="{Binding ItemTypeID}"/>
+                <DataGridTextColumn Header="ColorID" Binding="{Binding ColorID}"/>
                 <DataGridTextColumn Header="ItemName" Binding="{Binding ItemName}"/>
-                <DataGridTextColumn Header="CategoryName" Binding="{Binding CategoryName}"/>
+                <DataGridTextColumn Header="ItemTypeName" Binding="{Binding ItemTypeName}"/>
                 <DataGridTextColumn Header="ColorName" Binding="{Binding ColorName}"/>
+                <DataGridTextColumn Header="CategoryID" Binding="{Binding CategoryID}"/>
+                <DataGridTextColumn Header="CategoryName" Binding="{Binding CategoryName}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
                 <DataGridTextColumn Header="Qty" Binding="{Binding Qty}"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding Price}"/>
+                <DataGridTextColumn Header="Condition" Binding="{Binding Condition}"/>
+                <DataGridTextColumn Header="OrigQty" Binding="{Binding OrigQty}"/>
             </DataGrid.Columns>
         </DataGrid>
 

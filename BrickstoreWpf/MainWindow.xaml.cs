@@ -41,10 +41,18 @@ namespace BrickstoreWpf
                     var legoElem = new LegoElem
                     {
                         ItemID = item.Element("ItemID")!.Value,
+                        ItemTypeID = Convert.ToChar(item.Element("ItemTypeID")!.Value),
+                        ColorID = Convert.ToInt32(item.Element("ColorID")!.Value),
                         ItemName = item.Element("ItemName")!.Value,
-                        CategoryName = item.Element("CategoryName")!.Value,
+                        ItemTypeName = item.Element("ItemTypeName")!.Value,
                         ColorName = item.Element("ColorName")!.Value,
-                        Qty = item.Element("Qty")!.Value
+                        CategoryID = Convert.ToInt32(item.Element("CategoryID")!.Value),
+                        CategoryName = item.Element("CategoryName")!.Value,
+                        Status = Convert.ToChar(item.Element("Status")!.Value),
+                        Qty = Convert.ToInt32(item.Element("Qty")!.Value),
+                        Price = Convert.ToDouble(item.Element("Price")!.Value.ToString().Replace(".",",")),
+                        Condition = Convert.ToChar(item.Element("Condition")!.Value),
+                        OrigQty = Convert.ToInt32(item.Element("OrigQty")?.Value),
                     };
                     LegoElemekLista.Add(legoElem);
                 }
@@ -71,9 +79,17 @@ namespace BrickstoreWpf
     public class LegoElem
     {
         public required string ItemID { get; set; }
+        public required char ItemTypeID { get; set; }
+        public required int ColorID { get; set; }
         public required string ItemName { get; set; }
-        public required string CategoryName { get; set; }
+        public required string ItemTypeName { get; set; }
         public required string ColorName { get; set; }
-        public required string Qty { get; set; }
+        public required int CategoryID { get; set; }
+        public required string CategoryName { get; set; }
+        public required char Status { get; set; }
+        public required int Qty { get; set; }
+        public required double Price { get; set; }
+        public required char Condition { get; set; }
+        public required int OrigQty { get; set; }
     }
 }
