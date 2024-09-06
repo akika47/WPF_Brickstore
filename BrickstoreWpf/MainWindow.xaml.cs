@@ -53,7 +53,18 @@ namespace BrickstoreWpf
             }
         }
 
-
+        private void txtSzuro_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtSzuro.Text))
+            {
+                var szuro = txtSzuro.Text.ToLower();
+                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemID.ToLower().Contains(szuro) || x.ItemName.ToLower().Contains(szuro) || x.CategoryName.ToLower().Contains(szuro));
+            }
+            else
+            {
+                dgLegoKeszlet.ItemsSource = LegoElemekLista;
+            }
+        }
 
     }
 
