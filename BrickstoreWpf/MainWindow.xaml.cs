@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Win32;
+using System.Xml;
 
 namespace BrickstoreWpf
 {
@@ -22,6 +23,7 @@ namespace BrickstoreWpf
     public partial class MainWindow : Window
     {
         private List<LegoElem> LegoElemekLista;
+
 
         public MainWindow()
         {
@@ -58,15 +60,26 @@ namespace BrickstoreWpf
                 }
                 dgLegoKeszlet.ItemsSource = LegoElemekLista;
                 tbElemekSzama.Text = $"Elemek száma: {LegoElemekLista.Count}";
+                foreach (var item in LegoElemekLista.Select(x => x.CategoryName).Distinct())
+                {
+                    cbCategoryName.Items.Add(item);
+                }
+
+
             }
         }
 
         private void txtSzuro_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtSzuro.Text))
+            if (!string.IsNullOrEmpty(txtItemID.Text))
             {
-                var szuro = txtSzuro.Text.ToLower();
-                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemID.ToLower().Contains(szuro) || x.ItemName.ToLower().Contains(szuro) || x.CategoryName.ToLower().Contains(szuro));
+                var itemid = txtItemID.Text.ToLower();
+                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemID.ToLower().Contains(itemid));
+            }
+            else if (!string.IsNullOrEmpty(txtItemName.Text))
+            {
+                var itemname = txtItemName.Text.ToLower();
+                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemName.ToLower().Contains(itemname));
             }
             else
             {
@@ -74,6 +87,19 @@ namespace BrickstoreWpf
             }
         }
 
+        private void cbCategoryName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selected = cbCategoryName.SelectedItem.ToString()!;
+            if (!string.IsNullOrEmpty(selected))
+            {
+                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.CategoryName.Equals(selected));
+            }
+            else
+            {
+                dgLegoKeszlet.ItemsSource = LegoElemekLista;
+            }
+
+        }
     }
 
     public class LegoElem
