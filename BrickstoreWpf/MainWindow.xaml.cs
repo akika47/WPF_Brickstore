@@ -60,7 +60,9 @@ namespace BrickstoreWpf
                 }
                 dgLegoKeszlet.ItemsSource = LegoElemekLista;
                 tbElemekSzama.Text = $"Elemek száma: {LegoElemekLista.Count}";
-                foreach (var item in LegoElemekLista.Select(x => x.CategoryName).Distinct())
+                cbCategoryName.Items.Clear();
+                cbCategoryName.Items.Add("All Categories");
+                foreach (var item in LegoElemekLista.Select(x => x.CategoryName).Distinct().OrderBy(x => x))
                 {
                     cbCategoryName.Items.Add(item);
                 }
@@ -74,12 +76,12 @@ namespace BrickstoreWpf
             if (!string.IsNullOrEmpty(txtItemID.Text))
             {
                 var itemid = txtItemID.Text.ToLower();
-                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemID.ToLower().Contains(itemid));
+                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemID.ToLower().StartsWith(itemid));
             }
             else if (!string.IsNullOrEmpty(txtItemName.Text))
             {
                 var itemname = txtItemName.Text.ToLower();
-                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemName.ToLower().Contains(itemname));
+                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemName.ToLower().StartsWith(itemname));
             }
             else
             {
@@ -92,7 +94,15 @@ namespace BrickstoreWpf
             string selected = cbCategoryName.SelectedItem.ToString()!;
             if (!string.IsNullOrEmpty(selected))
             {
-                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.CategoryName.Equals(selected));
+                if (!selected.StartsWith("All"))
+                {
+                    dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.CategoryName.Equals(selected));
+                }
+                else
+                {
+                    dgLegoKeszlet.ItemsSource = LegoElemekLista;
+                }
+
             }
             else
             {

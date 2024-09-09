@@ -26,7 +26,7 @@
          <TextBox x:Name="txtItemName" Width="200" Grid.Row="2" TextChanged="txtSzuro_TextChanged"/>
          <Label Content="CategoryName" Grid.Row="3"/>
         <ComboBox x:Name="cbCategoryName" Grid.Row="3" Width="300" HorizontalAlignment="Right" SelectionChanged="cbCategoryName_SelectionChanged">
-            
+            <ComboBoxItem Content="All Categories"/>
         </ComboBox>
 
 
