@@ -14,6 +14,8 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Win32;
 using System.Xml;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace BrickstoreWpf
 {
@@ -22,7 +24,8 @@ namespace BrickstoreWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<LegoElem> LegoElemekLista;
+        List<LegoElem> LegoElemekLista;
+        List<LegoElem> filteredList;
 
 
         public MainWindow()
@@ -32,6 +35,7 @@ namespace BrickstoreWpf
 
         private void btnMegnyit_Click(object sender, RoutedEventArgs e)
         {
+
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "BSX fájlok (*.bsx)|*.bsx";
             if (openFileDialog.ShowDialog() == true)
@@ -62,7 +66,8 @@ namespace BrickstoreWpf
                 tbElemekSzama.Text = $"Elemek száma: {LegoElemekLista.Count}";
                 cbCategoryName.Items.Clear();
                 cbCategoryName.Items.Add("All Categories");
-                foreach (var item in LegoElemekLista.Select(x => x.CategoryName).Distinct().OrderBy(x => x))
+                filteredList = LegoElemekLista;
+                foreach (var item in filteredList.Select(x => x.CategoryName).Distinct().OrderBy(x => x))
                 {
                     cbCategoryName.Items.Add(item);
                 }
@@ -71,32 +76,39 @@ namespace BrickstoreWpf
             }
         }
 
-        private void txtSzuro_TextChanged(object sender, TextChangedEventArgs e)
+        private void Filter()
         {
+
             if (!string.IsNullOrEmpty(txtItemID.Text))
             {
                 var itemid = txtItemID.Text.ToLower();
-                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemID.ToLower().StartsWith(itemid));
-            }
-            else if (!string.IsNullOrEmpty(txtItemName.Text))
-            {
-                var itemname = txtItemName.Text.ToLower();
-                dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.ItemName.ToLower().StartsWith(itemname));
+                filteredList = filteredList.Where(x => x.ItemID.ToLower().StartsWith(itemid)).ToList();
             }
             else
             {
-                dgLegoKeszlet.ItemsSource = LegoElemekLista;
+                dgLegoKeszlet.ItemsSource = filteredList;
             }
-        }
 
-        private void cbCategoryName_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string selected = cbCategoryName.SelectedItem.ToString()!;
-            if (!string.IsNullOrEmpty(selected))
+            if (!string.IsNullOrEmpty(txtItemName.Text))
             {
+                var itemname = txtItemName.Text.ToLower();
+                filteredList = filteredList.Where(x => x.ItemName.ToLower().StartsWith(itemname)).ToList();
+
+            }
+            else
+            {
+                dgLegoKeszlet.ItemsSource = filteredList;
+            }
+
+
+
+
+            if (cbCategoryName.SelectedIndex != -1)
+            {
+                string selected = cbCategoryName.SelectedItem.ToString();
                 if (!selected.StartsWith("All"))
-                {
-                    dgLegoKeszlet.ItemsSource = LegoElemekLista.Where(x => x.CategoryName.Equals(selected));
+                { 
+                    filteredList = filteredList.Where(x => x.CategoryName.Equals(selected)).ToList();
                 }
                 else
                 {
@@ -104,11 +116,35 @@ namespace BrickstoreWpf
                 }
 
             }
-            else
-            {
-                dgLegoKeszlet.ItemsSource = LegoElemekLista;
-            }
 
+            dgLegoKeszlet.ItemsSource = filteredList;
+            updateCategory();
+            filteredList = LegoElemekLista;
+
+        }
+
+        private void updateCategory()
+        {
+            cbCategoryName.Items.Clear();
+            cbCategoryName.Items.Add("All Categories");
+
+            foreach (var item in filteredList.Select(x => x.CategoryName).Distinct().OrderBy(x => x))
+            {
+                cbCategoryName.Items.Add(item);
+            }
+        }
+
+        private void txtSzuro_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            Filter();
+
+        }
+
+        private void cbCategoryName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            Filter();
         }
     }
 
